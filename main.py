@@ -1,9 +1,11 @@
 import cv2
+import cvzone
 from cvzone.HandTrackingModule import HandDetector
 import time
 
 # Load background once
-imgBG = cv2.imread("R\\BG.png")
+imgBG = cv2.imread("R\\BGH.png")
+
 if imgBG is None:
     print("Error: Could not load background image.")
     exit()
@@ -29,16 +31,21 @@ snapThreshold = 40  # Distance threshold (pixels)
 
 while True:
     success, img = cap.read()
-    flipped = cv2.flip(img, 1)
     if not success:
         print("Camera not detected.")
         break
-
-    # Crop and resize camera frame
-    imgScaled = cv2.resize(flipped, (0, 0), fx=0.875, fy=0.875)
+    
+    # Crop and resize camera frame b   
+    imgScaled = cv2.resize(img, (0, 0), fx=0.875, fy=0.875)
     imgScaled = imgScaled[:, 80:480]
+    
+    # Overlay camera feed on background
+    imgBG_copy = imgBG.copy()
+    imgBG_copy[234:654, 795:1195] = imgScaled
+    
+    
 
-    hands, img = detector.findHands(imgScaled, flipType=False) #True = flip right and left
+    hands, img = detector.findHands(imgScaled, flipType=True)
 
     if startGame and hands:
         for hand in hands:
@@ -70,9 +77,7 @@ while True:
                     print(f"Right hand snap! Count = {snapCountRight}")
                     snapReadyRight = True
 
-    # Overlay camera feed on background
-    imgBG_copy = imgBG.copy()
-    imgBG_copy[234:654, 795:1195] = imgScaled
+    
 
     # Show snap counters
     cv2.putText(imgBG_copy, f"Left Snaps: {snapCountLeft}", (50, 150),
