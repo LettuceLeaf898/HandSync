@@ -1,5 +1,4 @@
 import cv2
-import cvzone
 from cvzone.HandTrackingModule import HandDetector
 import time
 
@@ -30,15 +29,16 @@ snapThreshold = 40  # Distance threshold (pixels)
 
 while True:
     success, img = cap.read()
+    flipped = cv2.flip(img, 1)
     if not success:
         print("Camera not detected.")
         break
 
     # Crop and resize camera frame
-    imgScaled = cv2.resize(img, (0, 0), fx=0.875, fy=0.875)
+    imgScaled = cv2.resize(flipped, (0, 0), fx=0.875, fy=0.875)
     imgScaled = imgScaled[:, 80:480]
 
-    hands, img = detector.findHands(imgScaled, flipType=False)
+    hands, img = detector.findHands(imgScaled, flipType=False) #True = flip right and left
 
     if startGame and hands:
         for hand in hands:
