@@ -18,16 +18,7 @@ GRAY = (60, 60, 60)
 LEFT_COLOR = (255, 50, 50)
 RIGHT_COLOR = (50, 150, 255)
 
-
-#beat map box corners
-# # Circle Heights
-# kick_height = 80
-# snare_height = 320
-# hihat_height = 320
-# # Circle positions
-# kick_pos = (WIDTH // 2, kick_height)
-# snare_pos = (WIDTH // 2, snare_height)
-# hihat_pos = (WIDTH // 2, hihat_height)
+#Margins
 radius = 40
 top_margin = 80
 left_margin = 50
@@ -44,9 +35,6 @@ snare = pygame.mixer.Sound("sounds/SNARE.wav")
 hihat = pygame.mixer.Sound("sounds/HIHAT.wav")
 
 # Beat patterns (8 steps)
-count = 4
-kick_pattern = 1
-snare_pattern = 3
 
 # Tempo (BPM)
 bpm = 120
@@ -184,17 +172,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    # Beat step trigger
-    if step%count ==500:
-        kick.play()
-        kick_light = time.time()
-    if step%count ==500:
-        snare.play()
-        snare_light = time.time()
-    if step>-1:
-        hihat.play()
-        hihat_light = time.time()
 
     # Draw background
     screen.fill(BLACK)
