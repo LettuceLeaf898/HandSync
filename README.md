@@ -7,3 +7,7 @@ Uses computer vision to see if your hand is in sync with the beat(s).
     python --version #to check python version
     pip install numpy==(version they ask)
     pip install pygame
+
+    #Create venv
+    python3 -m venv .venv 
+    source .venv/bin/activate
