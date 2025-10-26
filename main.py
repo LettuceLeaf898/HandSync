@@ -84,6 +84,7 @@ while True:
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 255), 5)
     cv2.putText(imgBG_copy, f"Right Snaps: {snapCountRight}", (50, 250),
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 100, 255), 5)
+    cv2.imshow("Hand Detection", img)
 
     cv2.imshow("Background", imgBG_copy)
 
