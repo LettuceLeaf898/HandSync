@@ -3,7 +3,7 @@ from cvzone.HandTrackingModule import HandDetector
 import time
 
 # Load background once
-imgBG = cv2.imread("R\\BG.png")
+imgBG = cv2.imread("R\\BG_play.png")
 if imgBG is None:
     print("Error: Could not load background image.")
     exit()
