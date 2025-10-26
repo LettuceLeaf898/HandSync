@@ -20,6 +20,7 @@ body {
   top: 0px;
   left: 0px;
   overflow: hidden;
+  padding: 20px;
 }
 .v1_5 {
   width: 484px;
@@ -123,20 +124,43 @@ body {
   cursor: pointer;
   width: 70px;             
 }
+  #video-stream {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: #000;
+  }
+ @media (max-width: 768px) {
+            .v1_5 {
+                font-size: 2em;
+                left: 50%;
+                transform: translateX(-50%);
+            }
 
-/* Stream styling */
-.stream-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.stream-controls button.button {
-  width: 90px;
-  left: auto; /* override .button left */
-}
+            .v1_3 {
+                padding: 20px;
+            }
 
-    </style>
+            .v15_5, .v15_7 {
+                width: 90%;
+                height: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-top: 20px;
+            }
+
+            #video-stream {
+                width: 100%;
+                height: auto;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }  
+        </style>
 </head>
 <body>
     <div class="v1_3">
@@ -144,8 +168,7 @@ body {
         <span class="v1_5">Hand-Sync</span>
 
         <div class="v15_5">
-          <!-- Embedded MJPEG stream -->
-          <img id="video-stream" class="stream-img" src="{{ url_for('video_feed') }}" alt="Live Stream">
+          <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Video Stream">
         </div>
         <div class="v15_7"></div>
         <div class="v15_9"></div>
