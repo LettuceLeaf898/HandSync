@@ -19,15 +19,15 @@ KICK_COLOR = (255, 50, 50)
 SNARE_COLOR = (50, 150, 255)
 HIHAT_COLOR = (255, 255, 100)
 
-# Circle Heights
-kick_height = 80
-snare_height = 320
-hihat_height = 320
-# Circle positions
-kick_pos = (WIDTH // 2, kick_height)
-snare_pos = (WIDTH // 2, snare_height)
-hihat_pos = (WIDTH // 2, hihat_height)
-radius = 40
+# # Circle Heights
+# kick_height = 80
+# snare_height = 320
+# hihat_height = 320
+# # Circle positions
+# kick_pos = (WIDTH // 2, kick_height)
+# snare_pos = (WIDTH // 2, snare_height)
+# hihat_pos = (WIDTH // 2, hihat_height)
+# radius = 40
 
 # Light-up timers
 kick_light = 0
@@ -69,16 +69,79 @@ clock = pygame.time.Clock()
 
 step = 0
 
+def one_circle(hand):
+    #create a circle
+    if hand == "left":
+        circle1_pos = (50, 50)
+    else:
+        circle1_pos = (WIDTH//2 +50)
+    
+    pygame.draw.circle(
+        screen,
+        KICK_COLOR if now - kick_light < light_duration else GRAY,
+        circle1_pos,
+        radius,
+    )
+def two_circle(hand):
+    pygame.draw.line(
+        screen, (255, 255, 255), kick_pos, snare_pos, 5
+    )
+
+    pygame.draw.circle(
+        screen,
+        KICK_COLOR if now - kick_light < light_duration else GRAY,
+        kick_pos,
+        radius,
+    )
+    
+    pygame.draw.circle(
+        screen,
+        KICK_COLOR if now - kick_light < light_duration else GRAY,
+        kick_pos,
+        radius,
+    )
+def three_circle(hand):
+    pygame.draw.line(
+        screen, (255, 255, 255), kick_pos, snare_pos, 5
+    )
+    pygame.draw.line(
+        screen, (255, 255, 255), kick_pos, snare_pos, 5
+    )
+    pygame.draw.line(
+        screen, (255, 255, 255), kick_pos, snare_pos, 5
+    )
+
+    pygame.draw.circle(
+        screen,
+        KICK_COLOR if now - kick_light < light_duration else GRAY,
+        kick_pos,
+        radius,
+    )
+    
+    pygame.draw.circle(
+        screen,
+        SNARE_COLOR if now - snare_light < light_duration else GRAY,
+        snare_pos,
+        radius,
+    )
+    pygame.draw.circle(
+        screen,
+        SNARE_COLOR if now - snare_light < light_duration else GRAY,
+        snare_pos,
+        radius,
+    )
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
     # Beat step trigger
-    if step%count ==kick_pattern:
+    if step%count ==500:
         kick.play()
         kick_light = time.time()
-    if step%count ==snare_pattern:
+    if step%count ==500:
         snare.play()
         snare_light = time.time()
     if step>-1:
