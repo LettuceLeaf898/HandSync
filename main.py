@@ -1,6 +1,9 @@
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 import time
+from flask import Flask, render_template, Response
+import cv2
+
 
 # Load background once
 imgBG = cv2.imread("R\\BG_play.png")

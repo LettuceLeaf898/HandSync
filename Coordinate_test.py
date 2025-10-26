@@ -175,8 +175,11 @@ while running:
 
     # Draw background
     screen.fill(BLACK)
+    if(step%8 ==3 or step%8 ==7): kick.play()
+    if(step%8 == 1 or step%8 == 5): snare.play()
 
     # Draw circles — light up briefly
+    hihat.play()
     if(left_beat == 1):
         one_circle("left")
     elif(left_beat == 2):
@@ -185,7 +188,7 @@ while running:
         three_circle("left", step%3)
     else:
         print("error")
-
+    hihat.play()
     if(right_beat == 1):
         one_circle("right")
     elif(right_beat == 2):
@@ -199,7 +202,7 @@ while running:
     time.sleep(beat_time)
 
     # Advance beat
-    step = (step + 1)%6
+    step = (step + 1)%24
     clock.tick(60)
 
 pygame.quit()
