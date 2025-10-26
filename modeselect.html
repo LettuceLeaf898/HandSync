@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Select</title>
+    <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap" rel="stylesheet"/>
+    <style>
+        .back-button{
+            position: absolute;
+            display: inline-block;        
+            text-decoration: none;          
+            text-align: center;           
+            background-color: #E7ECEF;
+            border: 2px solid #274C77;  
+            color: #274C77;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            cursor: pointer;
+            width: 70px;    
+            position: fixed;
+            top: 20px;
+            left: 20px;         
+        }
+        .mode-button{
+            display: block;        
+            text-decoration: none;          
+            text-align: center;           
+            background-color: #E7ECEF;
+            border: 2px solid #274C77;  
+            color: #274C77;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            cursor: pointer;
+            width: 500px;             
+        }
+        html, body{
+            height: 100%;
+            margin: 0;
+            position: relative;
+            color: #274C77;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box{
+            align-content: center;
+            align-self: center;
+            width: 800px;
+            border: 5px solid #274C77;
+            padding: 50px;
+            margin: 20px;
+            background-color: #E7ECEF;
+        }
+        h1{
+            font-family: Julius Sans One;
+            text-align: center;
+            font-size: 40px;
+        }
+        p{
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">Back</a>
+    <div class="box">
+        <a href="play-coordination.html" class="mode-button">Play Coordination Mode!</a>
+        <a href="play-rhythm.html" class="mode-button">Play Rhythm Mode!</a>
+    </div>
+</body>
+</html>
