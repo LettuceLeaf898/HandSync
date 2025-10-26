@@ -8,7 +8,7 @@ pygame.mixer.init()
 pygame.init()
 
 # Screen setup
-WIDTH, HEIGHT = 400, 200
+WIDTH, HEIGHT = 400, 400 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Beat Visualizer")
 
@@ -19,10 +19,14 @@ KICK_COLOR = (255, 50, 50)
 SNARE_COLOR = (50, 150, 255)
 HIHAT_COLOR = (255, 255, 100)
 
+# Circle Heights
+kick_height = 80
+snare_height = 320
+hihat_height = 320
 # Circle positions
-kick_pos = (80, HEIGHT // 2)
-snare_pos = (200, HEIGHT // 2)
-hihat_pos = (320, HEIGHT // 2)
+kick_pos = (WIDTH // 2, kick_height)
+snare_pos = (WIDTH // 2, snare_height)
+hihat_pos = (WIDTH // 2, hihat_height)
 radius = 40
 
 # Light-up timers
@@ -37,9 +41,9 @@ snare = pygame.mixer.Sound("sounds/SNARE.wav")
 hihat = pygame.mixer.Sound("sounds/HIHAT.wav")
 
 # Beat patterns (8 steps)
-kick_pattern = [1, 0, 0, 0, 1, 0, 0, 0]
-snare_pattern = [0, 0, 1, 0, 0, 0, 1, 0]
-hihat_pattern = [1, 1, 1, 1, 1, 1, 1, 1]
+count = 4
+kick_pattern = 1
+snare_pattern = 3
 
 # Tempo (BPM)
 bpm = 120
@@ -64,19 +68,20 @@ print("Playing beat... (press 'q' then Enter to stop)")
 clock = pygame.time.Clock()
 
 step = 0
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
     # Beat step trigger
-    if kick_pattern[step]:
+    if step%count ==kick_pattern:
         kick.play()
         kick_light = time.time()
-    if snare_pattern[step]:
+    if step%count ==snare_pattern:
         snare.play()
         snare_light = time.time()
-    if hihat_pattern[step]:
+    if step>-1:
         hihat.play()
         hihat_light = time.time()
 
@@ -85,24 +90,29 @@ while running:
 
     # Draw circles — light up briefly
     now = time.time()
+    pygame.draw.line(
+        screen, (255, 255, 255), kick_pos, snare_pos, 5
+    )
+
     pygame.draw.circle(
         screen,
         KICK_COLOR if now - kick_light < light_duration else GRAY,
         kick_pos,
         radius,
     )
+    
     pygame.draw.circle(
         screen,
         SNARE_COLOR if now - snare_light < light_duration else GRAY,
         snare_pos,
         radius,
     )
-    pygame.draw.circle(
-        screen,
-        HIHAT_COLOR if now - hihat_light < light_duration else GRAY,
-        hihat_pos,
-        radius,
-    )
+    # pygame.draw.circle(
+    #     screen,
+    #     HIHAT_COLOR if now - hihat_light < light_duration else GRAY,
+    #     hihat_pos,
+    #     radius,
+    # )
 
     pygame.display.flip()
     time.sleep(beat_time)

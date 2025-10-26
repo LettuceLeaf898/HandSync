@@ -1,11 +1,9 @@
 import cv2
-import cvzone
 from cvzone.HandTrackingModule import HandDetector
 import time
 
 # Load background once
-imgBG = cv2.imread("R\\BGH.png")
-
+imgBG = cv2.imread("R\\BG.png")
 if imgBG is None:
     print("Error: Could not load background image.")
     exit()
@@ -16,7 +14,7 @@ cap.set(3, 640)
 cap.set(4, 480)
 
 # Hand detector (detect both hands)
-detector = HandDetector(maxHands=2, detectionCon=0.8)
+detector = HandDetector(maxHands=2, detectionCon=0.5)
 
 # Game / snap logic variables
 startGame = False
@@ -31,21 +29,18 @@ snapThreshold = 40  # Distance threshold (pixels)
 
 while True:
     success, img = cap.read()
+    flipped = cv2.flip(img, 1)
     if not success:
         print("Camera not detected.")
         break
-    
-    # Crop and resize camera frame b   
-    imgScaled = cv2.resize(img, (0, 0), fx=0.875, fy=0.875)
-    imgScaled = imgScaled[:, 80:480]
-    
-    # Overlay camera feed on background
-    imgBG_copy = imgBG.copy()
-    imgBG_copy[234:654, 795:1195] = imgScaled
-    
-    
 
-    hands, img = detector.findHands(imgScaled, flipType=True)
+    # Crop and resize camera frame
+    imgScaled = cv2.resize(flipped, (0, 0), fx=0.875, fy=0.875)
+    imgScaled = imgScaled[:, 80:480]
+
+    hands, img = detector.findHands(imgScaled, flipType=False) #True = flip right and left
+
+    
 
     if startGame and hands:
         for hand in hands:
@@ -77,14 +72,15 @@ while True:
                     print(f"Right hand snap! Count = {snapCountRight}")
                     snapReadyRight = True
 
-    
+    # Overlay camera feed on background
+    imgBG_copy = imgBG.copy()
+    imgBG_copy[234:654, 795:1195] = imgScaled
 
     # Show snap counters
     cv2.putText(imgBG_copy, f"Left Snaps: {snapCountLeft}", (50, 150),
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 255), 5)
     cv2.putText(imgBG_copy, f"Right Snaps: {snapCountRight}", (50, 250),
                 cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 100, 255), 5)
-    cv2.imshow("Hand Detection", img)
 
     cv2.imshow("Background", imgBG_copy)
 
