@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandSync - Live Stream</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #video-stream {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #000;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(245, 87, 108, 0.4);
+        }
+
+        .reset-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: #4caf50;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 HandSync Live Stream</h1>
+        <p class="subtitle">Hand Gesture Detection & Snap Counter</p>
+        
+        <div class="status">
+            📹 Live Stream Active
+        </div>
+
+        <div class="video-container">
+            <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Live Video Stream">
+        </div>
+
+        <div class="controls">
+            <button class="reset-btn" onclick="resetCounters()">🔄 Reset Counters</button>
+        </div>
+
+        <div class="info-box">
+            <h3>📝 Instructions:</h3>
+            <p>
+                • The stream shows real-time hand tracking with snap detection<br>
+                • <strong>Left hand snaps</strong> are shown in <span style="color: #00ffff;">cyan</span><br>
+                • <strong>Right hand snaps</strong> are shown in <span style="color: #ff64ff;">magenta</span><br>
+                • Make a snapping motion (thumb to middle finger) to increment the counter<br>
+                • Click "Reset Counters" to start over
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function resetCounters() {
+            fetch('/reset')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert('Snap counters have been reset!');
+                })
+                .catch(error => {
+                    console.error('Error resetting counters:', error);
+                    alert('Failed to reset counters');
+                });
+        }
+
+        // Reload video stream if it stops
+        const videoStream = document.getElementById('video-stream');
+        videoStream.onerror = function() {
+            console.log('Stream error, attempting to reconnect...');
+            setTimeout(() => {
+                videoStream.src = "{{ url_for('video_feed') }}?" + new Date().getTime();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
